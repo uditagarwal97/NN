@@ -36,7 +36,7 @@ public class LayerTest {
         Matrix OpOfLayer1 = InputLayer.FeedPropogate(input);
         assert InputLayer.GetOutputMatrixSize() == OpOfLayer1.GetRow();
         assert OpOfLayer1.GetCol() == 1;
-        assert Matrix.CompareMatrices(OpOfLayer1, new Matrix(1, new double[] {1, 1, 2})) == true;
+        assert Matrix.CompareMatrices(OpOfLayer1, new Matrix(1, new double[]{1, 1, 2}));
     }
 
     @Test
