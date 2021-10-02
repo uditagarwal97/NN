@@ -74,6 +74,51 @@ public class LayerTest {
         assert Matrix.CompareMatrices(OpOfLayer3, new Matrix(1, new double[] {17})) == true;
     }
 
+    /* Expected output:
+    Layer weights of layer 3 is:
+            1.0 1.0 1.0 1.0 1.0
+    Error signal of layer 3 is:
+            -3808.0
+            ---
+    Layer weights of layer 2 is:
+            1.0 1.0 1.0
+            1.0 1.0 1.0
+            1.0 1.0 1.0
+            1.0 1.0 1.0
+    Error signal of layer 2 is:
+            -0.0
+            45696.0
+            45696.0
+            45696.0
+            45696.0
+    */
+    @Test
+    public void TestErrorSignalGeneration()
+    {
+        Matrix input = new Matrix(1, new double[] {1, 2});
+        Matrix output = new Matrix(1, new double[] {3});
+
+        Layer InputLayer = new Layer(1, Layer.Type.Input, 2, null, true, true);
+        Layer HiddenLayer = new Layer(2, Layer.Type.Hidden, 4, InputLayer, true, true);
+        Layer OutputLayer = new Layer(3, Layer.Type.Output, 1, HiddenLayer, false, true);
+
+        Matrix OpOfLayer1 = InputLayer.FeedPropogate(input); // Output should be {1, 1, 2}
+
+        Matrix OpOfLayer2 = HiddenLayer.FeedPropogate(OpOfLayer1); // Output should be {1, 4, 4, 4, 4}
+
+        Matrix OpOfLayer3 = OutputLayer.FeedPropogate(OpOfLayer2); // Output should be 17
+
+        OutputLayer.BackPropogation(output, null);
+        assert Matrix.CompareMatrices(OutputLayer.GetWeightMatrix(), new Matrix(1, 5, 1)) == true;
+        assert Matrix.CompareMatrices(OutputLayer.ErrorSignal, new Matrix(1, new double[] {-3808.0})) == true;
+
+        System.out.println("---");
+
+        HiddenLayer.BackPropogation(null, OutputLayer);
+        assert Matrix.CompareMatrices(HiddenLayer.GetWeightMatrix(), new Matrix(4, 3, 1)) == true;
+        assert Matrix.CompareMatrices(HiddenLayer.ErrorSignal, new Matrix(1, new double[] {-0.0, 45696.0, 45696.0, 45696.0, 45696.0})) == true;
+    }
+
     @Test
     public void TestSigmoidActivationFunction()
     {

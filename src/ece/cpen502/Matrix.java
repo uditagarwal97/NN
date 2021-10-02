@@ -137,4 +137,17 @@ public class Matrix {
             return false;
         }
     }
+
+    public void PrintMatrix()
+    {
+        for (int i = 0; i < this.GetRow(); i++)
+        {
+            for (int j = 0; j < this.GetCol(); j++)
+            {
+                System.out.print(this.data[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println(" ");
+        }
+    }
 }

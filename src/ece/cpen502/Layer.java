@@ -30,9 +30,9 @@ public class Layer {
     // Matrix to temporarily store the output of a layer.
     private Matrix Output;
     // Size of this matrix is same as that of the Weight matrix.
-    private Matrix OutputDerivative;
+    public Matrix OutputDerivative;
     // Error signal
-    private Matrix ErrorSignal;
+    public Matrix ErrorSignal;
 
     public Layer(int layerNo, Type layerType, int numberOfNeurons, Layer previousLayer, boolean hasBias, boolean isTest)
     {
@@ -70,6 +70,11 @@ public class Layer {
         }
     }
 
+    /**
+     * This function calculates the output of the current layer.
+     * @param outputOfPreviousLayer: Give the output of the previous layer as input to this layer.
+     * @return It will return and store the output of the current layer.
+     */
     public Matrix FeedPropogate(Matrix outputOfPreviousLayer)
     {
         assert outputOfPreviousLayer != null;
@@ -133,7 +138,10 @@ public class Layer {
         }
     }
 
-    // Either give target of the NN as parameter or give previous layer as input.
+    /**
+     * This function calculates the error for the current layer.
+     * @param target Either give target of the NN as parameter (for output layer) or give previous layer as input (for hidden layers).
+     */
     public void BackPropogation(Matrix target, Layer nextLayer)
     {
         // These checks ensure that feedforward propogation step is complete.
@@ -171,6 +179,7 @@ public class Layer {
         }
     }
 
+    // TODO: Complete this.
     public void UpdateWeights()
     {
         
@@ -202,4 +211,22 @@ public class Layer {
     public int GetLayerNumber() { return this.LayerNumber; }
     public int GetOutputMatrixSize() { return (this.HasBias + this.NumberOfNeurons); }
     public Matrix GetWeightMatrix() { return this.Weights; }
+
+    public void PrintErrorSignal()
+    {
+        System.out.println("Error signal of layer " + this.LayerNumber + " is:");
+        if (this.ErrorSignal == null || this.ErrorSignal.data.length == 0)
+            return;
+
+        this.ErrorSignal.PrintMatrix();
+    }
+
+    public void PrintLayerWeights()
+    {
+        System.out.println("Layer weights of layer " + this.LayerNumber + " is:");
+        if (this.ErrorSignal == null || this.ErrorSignal.data.length == 0)
+            return;
+
+        this.Weights.PrintMatrix();
+    }
 }
