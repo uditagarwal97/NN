@@ -45,10 +45,12 @@ public class Matrix {
 
         this.data = new double[this.NumRows][this.NumCols];
 
+        int count = 0;
         for (int i = 0; i < this.NumRows; i++){
             for (int j = 0; j < this.NumCols; j++){
-                this.data[i][j] = data[i+j];
+                this.data[i][j] = data[i + j + count];
             }
+            count += this.NumCols - 1;
         }
     }
 
@@ -148,6 +150,39 @@ public class Matrix {
                 System.out.print(" ");
             }
             System.out.println(" ");
+        }
+    }
+
+    public Matrix GetCurrentRow(int i)
+    {
+        assert i < this.GetRow();
+
+        Matrix out = new Matrix(1, this.GetCol(), 0);
+        for (int j = 0; j < this.GetCol(); j++)
+        {
+            out.data[0][j] = this.data[i][j];
+        }
+
+        return out;
+    }
+
+    public Matrix GetCurrentRow(int i, boolean isColoumn)
+    {
+        assert i < this.GetRow();
+
+        if (isColoumn == true)
+        {
+            Matrix out = new Matrix(this.GetCol(), 1, 0);
+            for (int j = 0; j < this.GetCol(); j++)
+            {
+                out.data[j][0] = this.data[i][j];
+            }
+
+            return out;
+        }
+        else
+        {
+            return GetCurrentRow(i);
         }
     }
 }

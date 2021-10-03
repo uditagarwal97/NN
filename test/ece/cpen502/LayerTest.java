@@ -120,6 +120,91 @@ public class LayerTest {
     }
 
     @Test
+    public void TestUpdateWeights()
+    {
+        Matrix input = new Matrix(1, new double[] {1, 0});
+        Matrix output = new Matrix(1, new double[] {1});
+
+        Layer InputLayer = new Layer(1, Layer.Type.Input, 2, null, true, false);
+        Layer HiddenLayer = new Layer(2, Layer.Type.Hidden, 4, InputLayer, true, false);
+        Layer OutputLayer = new Layer(3, Layer.Type.Output, 1, HiddenLayer, false, false);
+
+        for (int k =0; k < 5000; k++) {
+            Matrix OpOfLayer1 = InputLayer.FeedPropogate(input); // Output should be {1, 1, 2}
+
+            Matrix OpOfLayer2 = HiddenLayer.FeedPropogate(OpOfLayer1); // Output should be {1, 4, 4, 4, 4}
+
+            Matrix OpOfLayer3 = OutputLayer.FeedPropogate(OpOfLayer2); // Output should be 17
+
+            System.out.println(OpOfLayer3.data[0][0]);
+
+            if (Math.abs(OpOfLayer3.data[0][0] - output.data[0][0]) < 0.05)
+            {
+                System.out.println("Current iteration is: " + k);
+                break;
+            }
+
+            OutputLayer.BackPropogation(output, null);
+            HiddenLayer.BackPropogation(null, OutputLayer);
+
+            HiddenLayer.UpdateWeights(InputLayer);
+            OutputLayer.UpdateWeights(HiddenLayer);
+        }
+    }
+
+    @Test
+    public void TestCompleteNN()
+    {
+        Matrix input = new Matrix(2, new double[] {0, 0, 0, 1, 1, 1, 1, 0});
+        Matrix output = new Matrix(1, new double[] {0, 1, 0, 1});
+
+        assert input.GetRow() == output.GetRow();
+
+        Layer InputLayer = new Layer(1, Layer.Type.Input, 2, null, true, false);
+        Layer HiddenLayer = new Layer(2, Layer.Type.Hidden, 4, InputLayer, true, false);
+        Layer OutputLayer = new Layer(3, Layer.Type.Output, 1, HiddenLayer, false, false);
+
+        for (int k =0; k < 50000; k++) {
+            for (int j = 0; j < input.GetRow(); j++) {
+
+                Matrix currentInput = input.GetCurrentRow(j, true);
+                Matrix currentOutput = output.GetCurrentRow(j);
+
+                Matrix OpOfLayer1 = InputLayer.FeedPropogate(currentInput); // Output should be {1, 1, 2}
+
+                Matrix OpOfLayer2 = HiddenLayer.FeedPropogate(OpOfLayer1); // Output should be {1, 4, 4, 4, 4}
+
+                Matrix OpOfLayer3 = OutputLayer.FeedPropogate(OpOfLayer2); // Output should be 17
+
+                System.out.print("Input is: ");
+                input.GetCurrentRow(j).PrintMatrix();
+                System.out.println(OpOfLayer3.data[0][0]);
+
+                if (Math.abs(OpOfLayer3.data[0][0] - output.data[0][0]) < 0.05) {
+                    System.out.println("Current iteration is: " + k);
+                    break;
+                }
+
+                OutputLayer.BackPropogation(currentOutput, null);
+                HiddenLayer.BackPropogation(null, OutputLayer);
+
+                HiddenLayer.UpdateWeights(InputLayer);
+                OutputLayer.UpdateWeights(HiddenLayer);
+            }
+        }
+
+        /*
+        System.out.println("Weights after updating");
+        HiddenLayer.PrintLayerWeights();
+        OutputLayer.PrintLayerWeights();
+
+        System.out.println("Error matrix is");
+        HiddenLayer.PrintErrorSignal();
+        OutputLayer.PrintErrorSignal();
+         */
+    }
+
+    @Test
     public void TestSigmoidActivationFunction()
     {
         Matrix input = new Matrix(1, new double[] {1, 2});

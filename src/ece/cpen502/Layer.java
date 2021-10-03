@@ -25,6 +25,9 @@ public class Layer {
     private int HasBias;
     private boolean isTest;
 
+    // Learning rate.
+    private double LR;
+
     // The size of this matrix should be equal to No. of Neurons in this layer X No. of neurons in the previous layer.
     private Matrix Weights;
     // Matrix to temporarily store the output of a layer.
@@ -33,6 +36,43 @@ public class Layer {
     public Matrix OutputDerivative;
     // Error signal
     public Matrix ErrorSignal;
+
+    public Layer(int layerNo, Type layerType, int numberOfNeurons, Layer previousLayer, boolean hasBias, boolean isTest, double LR)
+    {
+        this.LayerNumber = layerNo;
+        this.LayerType = layerType;
+        this.HasBias = (hasBias) ? 1 : 0;
+        this.isTest = isTest;
+        this.Output = null;
+        this.OutputDerivative = null;
+        this.NumberOfNeurons = numberOfNeurons;
+        this.ErrorSignal = null;
+        this.LR = LR;
+
+        // If it's an input layer, just have a matrix of [No. of inputs, 1], initialized by one.
+        if (this.LayerType == Type.Input)
+        {
+            assert previousLayer == null;
+            this.Weights = new Matrix(this.NumberOfNeurons, 1, 1);
+        }
+        else
+        {
+            assert previousLayer != null;
+
+            // During test mode, do not use random weights so that test cases are deterministic.
+            if (isTest)
+            {
+                // Initialize weights by 1 during test mode.
+                this.Weights = new Matrix(this.NumberOfNeurons, previousLayer.GetOutputMatrixSize(), 1);
+            }
+            else
+            {
+                // Initialize the weights by random value: [-0.5, 0.5]
+                this.Weights = new Matrix(this.NumberOfNeurons, previousLayer.GetOutputMatrixSize());
+                this.Weights.InitRand();
+            }
+        }
+    }
 
     public Layer(int layerNo, Type layerType, int numberOfNeurons, Layer previousLayer, boolean hasBias, boolean isTest)
     {
@@ -44,6 +84,7 @@ public class Layer {
         this.OutputDerivative = null;
         this.NumberOfNeurons = numberOfNeurons;
         this.ErrorSignal = null;
+        this.LR = 0.2; // Default learning rate.
 
         // If it's an input layer, just have a matrix of [No. of inputs, 1], initialized by one.
         if (this.LayerType == Type.Input)
@@ -180,9 +221,19 @@ public class Layer {
     }
 
     // TODO: Complete this.
-    public void UpdateWeights()
+    public void UpdateWeights(Layer prevLayer)
     {
-        
+        assert this.LayerType != Type.Input;
+        assert prevLayer != null;
+
+        for (int i = 0; i < this.NumberOfNeurons; i++)
+        {
+            for (int j = 0; j < prevLayer.NumberOfNeurons + prevLayer.HasBias; j++)
+            {
+                double delta = -1 * this.LR * prevLayer.Output.data[j][0] * this.ErrorSignal.data[i][0];
+                this.Weights.data[i][j] += delta;
+            }
+        }
     }
 
     public double ComputeActivationFunction(double x)
