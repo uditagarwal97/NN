@@ -16,20 +16,20 @@ public class Layer {
 
     // That's the default settings.
     ActivationFunctionType ACTFun = ActivationFunctionType.Sigmoid;
-    private double SigmoidUpperBound = 1;
-    private double SigmoidLowerBound = 0;
+    private final double SigmoidUpperBound = 1;
+    private final double SigmoidLowerBound = 0;
 
-    private Type LayerType;
-    private int LayerNumber;
-    private int NumberOfNeurons;
-    private int HasBias;
-    private boolean isTest;
+    private final Type LayerType;
+    private final int LayerNumber;
+    private final int NumberOfNeurons;
+    private final int HasBias;
+    private final boolean isTest;
 
     // Learning rate.
-    private double LR;
+    private final double LR;
 
     // The size of this matrix should be equal to No. of Neurons in this layer X No. of neurons in the previous layer.
-    private Matrix Weights;
+    private final Matrix Weights;
     // Matrix to temporarily store the output of a layer.
     private Matrix Output;
     // Size of this matrix is same as that of the Weight matrix.

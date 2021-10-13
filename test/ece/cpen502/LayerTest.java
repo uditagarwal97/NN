@@ -14,16 +14,16 @@ public class LayerTest {
         assert inpLayer.GetLayerNumber() == 1;
         assert inpLayer.GetOutputMatrixSize() == 3;
         assert inpLayer.GetNumberOfNeurons() == 3;
-        assert Matrix.CompareMatrices(inpLayer.GetWeightMatrix(), new Matrix(3, 1, 1)) == true;
+        assert Matrix.CompareMatrices(inpLayer.GetWeightMatrix(), new Matrix(3, 1, 1));
 
         // First hidden layer
         Layer hiddenLayer = new Layer(2, Layer.Type.Hidden, 5, inpLayer, false, true);
-        assert Matrix.CompareMatrices(hiddenLayer.GetWeightMatrix(), new Matrix(5, 3, 1)) == true;
+        assert Matrix.CompareMatrices(hiddenLayer.GetWeightMatrix(), new Matrix(5, 3, 1));
         assert hiddenLayer.GetOutputMatrixSize() == 5;
 
         // Second hidden layer
         Layer hiddenLayer2 = new Layer(3, Layer.Type.Hidden, 5, hiddenLayer, true, true);
-        assert Matrix.CompareMatrices(hiddenLayer2.GetWeightMatrix(), new Matrix(5, 5, 1)) == true;
+        assert Matrix.CompareMatrices(hiddenLayer2.GetWeightMatrix(), new Matrix(5, 5, 1));
         assert hiddenLayer2.GetOutputMatrixSize() == 6;
     }
 
@@ -52,7 +52,7 @@ public class LayerTest {
         assert HiddenLayer.GetOutputMatrixSize() == 5;
         assert OpOfLayer2.GetCol() == 1;
         assert OpOfLayer2.GetRow() == 5;
-        assert Matrix.CompareMatrices(OpOfLayer2, new Matrix(1, new double[] {1, 4, 4, 4, 4})) == true;
+        assert Matrix.CompareMatrices(OpOfLayer2, new Matrix(1, new double[]{1, 4, 4, 4, 4}));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class LayerTest {
         assert OutputLayer.GetOutputMatrixSize() == 1;
         assert OpOfLayer3.GetCol() == 1;
         assert OpOfLayer3.GetRow() == 1;
-        assert Matrix.CompareMatrices(OpOfLayer3, new Matrix(1, new double[] {17})) == true;
+        assert Matrix.CompareMatrices(OpOfLayer3, new Matrix(1, new double[]{17}));
     }
 
     /* Expected output:
@@ -109,14 +109,14 @@ public class LayerTest {
         Matrix OpOfLayer3 = OutputLayer.FeedPropogate(OpOfLayer2); // Output should be 17
 
         OutputLayer.BackPropogation(output, null);
-        assert Matrix.CompareMatrices(OutputLayer.GetWeightMatrix(), new Matrix(1, 5, 1)) == true;
-        assert Matrix.CompareMatrices(OutputLayer.ErrorSignal, new Matrix(1, new double[] {-3808.0})) == true;
+        assert Matrix.CompareMatrices(OutputLayer.GetWeightMatrix(), new Matrix(1, 5, 1));
+        assert Matrix.CompareMatrices(OutputLayer.ErrorSignal, new Matrix(1, new double[]{-3808.0}));
 
         System.out.println("---");
 
         HiddenLayer.BackPropogation(null, OutputLayer);
-        assert Matrix.CompareMatrices(HiddenLayer.GetWeightMatrix(), new Matrix(4, 3, 1)) == true;
-        assert Matrix.CompareMatrices(HiddenLayer.ErrorSignal, new Matrix(1, new double[] {-0.0, 45696.0, 45696.0, 45696.0, 45696.0})) == true;
+        assert Matrix.CompareMatrices(HiddenLayer.GetWeightMatrix(), new Matrix(4, 3, 1));
+        assert Matrix.CompareMatrices(HiddenLayer.ErrorSignal, new Matrix(1, new double[]{-0.0, 45696.0, 45696.0, 45696.0, 45696.0}));
     }
 
     @Test

@@ -2,7 +2,7 @@ package ece.cpen502;
 
 import org.junit.Test;
 
-public class MatrixLibraryTest {
+public class MatrixLibTest {
 
     @Test
     public void TestBasicMatrixFunc()
@@ -66,6 +66,6 @@ public class MatrixLibraryTest {
         assert a.GetCol() == 2;
 
         Matrix b = new Matrix(3, 2, 1);
-        assert Matrix.CompareMatrices(a, b) == true;
+        assert Matrix.CompareMatrices(a, b);
     }
 }
