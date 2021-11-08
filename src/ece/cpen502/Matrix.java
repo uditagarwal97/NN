@@ -5,17 +5,17 @@ import java.util.Scanner;
 
 /*
  * A library for handling matrix operations. It's required for developing NN.
- * @ Author: Udit Kumar Agarwal
+ * @ Author: Udit Kumar Agarwal, Nalin Munshi
  * @ Email: uditagarwal1997@gmail.com
  */
 public class Matrix {
 
     // Number of rows in the matrix.
-    private int NumRows;
+    private final int NumRows;
     // Number of coloumns of the matrix.
-    private int NumCols;
+    private final int NumCols;
     // Data stored within the matrix.
-    public double data[][];
+    public double[][] data;
 
     public Matrix (int Rows, int Coloumns){
         this.NumCols = Coloumns;
@@ -158,10 +158,7 @@ public class Matrix {
         assert i < this.GetRow();
 
         Matrix out = new Matrix(1, this.GetCol(), 0);
-        for (int j = 0; j < this.GetCol(); j++)
-        {
-            out.data[0][j] = this.data[i][j];
-        }
+        if (this.GetCol() >= 0) System.arraycopy(this.data[i], 0, out.data[0], 0, this.GetCol());
 
         return out;
     }
@@ -170,7 +167,7 @@ public class Matrix {
     {
         assert i < this.GetRow();
 
-        if (isColoumn == true)
+        if (isColoumn)
         {
             Matrix out = new Matrix(this.GetCol(), 1, 0);
             for (int j = 0; j < this.GetCol(); j++)
