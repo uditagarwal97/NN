@@ -164,7 +164,7 @@ public class LayerTest {
         Layer HiddenLayer = new Layer(2, Layer.Type.Hidden, 4, InputLayer, true, false);
         Layer OutputLayer = new Layer(3, Layer.Type.Output, 1, HiddenLayer, false, false);
 
-        for (int k =0; k < 50000; k++) {
+        for (int k =0; k < 5000; k++) {
             for (int j = 0; j < input.GetRow(); j++) {
 
                 Matrix currentInput = input.GetCurrentRow(j, true);
