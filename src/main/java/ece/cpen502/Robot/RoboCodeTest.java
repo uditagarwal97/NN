@@ -1,4 +1,4 @@
-package ece.cpen502;
+package ece.cpen502.Robot;
 
 import robocode.*;
 import robocode.Robot;
@@ -8,7 +8,6 @@ import robocode.util.Utils;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Random;
 
 public class RoboCodeTest extends AdvancedRobot {
 

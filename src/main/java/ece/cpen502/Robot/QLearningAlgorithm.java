@@ -1,4 +1,4 @@
-package ece.cpen502;
+package ece.cpen502.Robot;
 
 public class QLearningAlgorithm {
 

@@ -1,4 +1,4 @@
-package ece.cpen502;
+package ece.cpen502.NN;
 
 import java.io.File;
 import java.io.IOException;
