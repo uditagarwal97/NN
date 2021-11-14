@@ -1,4 +1,6 @@
-package ece.cpen502;
+package ece.cpen502.NN;
+
+import ece.cpen502.NN.CommonInterface;
 
 public interface NeuralNetworkInterface extends CommonInterface {
 

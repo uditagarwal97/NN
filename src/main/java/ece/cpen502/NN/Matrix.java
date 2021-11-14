@@ -1,7 +1,6 @@
-package ece.cpen502;
+package ece.cpen502.NN;
 
 import java.util.Random;
-import java.util.Scanner;
 
 /*
  * A library for handling matrix operations. It's required for developing NN.

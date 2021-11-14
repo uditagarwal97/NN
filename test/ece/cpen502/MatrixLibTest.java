@@ -1,5 +1,6 @@
 package ece.cpen502;
 
+import ece.cpen502.NN.Matrix;
 import org.junit.Test;
 
 public class MatrixLibTest {

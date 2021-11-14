@@ -1,5 +1,7 @@
 package ece.cpen502;
 
+import ece.cpen502.NN.Layer;
+import ece.cpen502.NN.Matrix;
 import org.junit.Test;
 
 public class LayerTest {
