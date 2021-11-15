@@ -5,6 +5,10 @@ import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.control.BattlefieldSpecification;
 import robocode.util.Utils;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -16,6 +20,10 @@ public class RoboCodeTest extends AdvancedRobot {
     RobotActions action;
     LookUpTable lut;
     QLearningAlgorithm learning;
+    static double[] cumulative_reward_array=new double[1000];
+    //LUT table initialization
+    int[] total_states_and_actions=new int[8*6*4*4*4];
+    String[][] LookUpTable=new String[total_states_and_actions.length][2];
 
     Double reward;
 
@@ -194,4 +202,58 @@ public class RoboCodeTest extends AdvancedRobot {
     {
         reward += -6.0;
     }
+
+    public void saveCumulativeReward() {
+
+        PrintStream w = null;
+        try {
+            w = new PrintStream(new RobocodeFileOutputStream(getDataFile("cumulative.txt")));
+            for (int i=0;i<cumulative_reward_array.length;i++) {
+                w.println(cumulative_reward_array[i]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            w.flush();
+            w.close();
+        }
+
+    }//save
+
+    public void saveLookUpTable() {
+
+        PrintStream w = null;
+        try {
+            w = new PrintStream(new RobocodeFileOutputStream(getDataFile("LookUpTable.txt")));
+            for (int i=0;i<LookUpTable.length;i++) {
+                w.println(LookUpTable[i][0]+"    "+LookUpTable[i][1]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            w.flush();
+            w.close();
+        }
+
+    }//save
+
+    public void loadLookUpTable() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(getDataFile("LookUpTable.txt")));
+        String cell = reader.readLine();
+        try {
+            int i=0;
+            while (cell != null) {
+                String[] splitLine = cell.split("    ");
+                LookUpTable[i][0]=splitLine[0];
+                LookUpTable[i][1]=splitLine[1];
+                i++;
+                cell= reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            reader.close();
+        }
+    }//load
+
 }
