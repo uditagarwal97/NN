@@ -1,5 +1,6 @@
 package ece.cpen502.Robot;
 
+import org.picocontainer.annotations.Inject;
 import robocode.*;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
@@ -21,9 +22,15 @@ public class RoboCodeTest extends AdvancedRobot {
     LookUpTable lut;
     QLearningAlgorithm learning;
     static double[] cumulative_reward_array=new double[1000];
+
     //LUT table initialization
-    int[] total_states_and_actions=new int[8*6*4*4*4];
-    String[][] LookUpTable=new String[total_states_and_actions.length][2];
+    @Inject
+    RobotStates states;
+
+    int[] actions = new int[RobotActions.ActionTypes.values().length];
+    int[] total_states_actions = new int[states.x.length * states.y.length * states.bearing_angle.length * states.distance_to_enemy.length * actions.length];
+    String[][] LUT=new String[total_states_actions.length][2];
+    String[][] LookUpTable=new String[total_states_actions.length][2];
 
     Double reward;
 
