@@ -3,6 +3,7 @@ Implentation of a basic neural network in Java, followed by training and testing
 # Project Group
 1. Udit Kumar Agarwal
 2. Nalin Munshi
+3. Mary Abikoye
 
 # License
 Please refer to the LICENSE.md file for project license details.
